@@ -66,7 +66,8 @@ fun ColumnScope.CardSection() {
 @Composable
 fun ColumnScope.CardImages(res: IntArray) {
     if (LocalConfiguration.current.orientation
-        == Configuration.ORIENTATION_LANDSCAPE) {
+        == Configuration.ORIENTATION_LANDSCAPE
+    ) {
         // weight(1f)은 onCreate()에 있는 Column에 적용됨
         // 버튼을 맨 밑에 위치시키기 위함
         Row(
@@ -74,80 +75,26 @@ fun ColumnScope.CardImages(res: IntArray) {
                 .weight(1f)
                 .background(Color(0, 100, 0))
         ) {
-            Image(
-                painter = painterResource(res[0]),
-                contentDescription = "1st card",
-                modifier = Modifier.fillMaxHeight().padding(4.dp).weight(1f)
-            )
-            Image(
-                painter = painterResource(res[1]),
-                contentDescription = "2nd card",
-                modifier = Modifier.fillMaxHeight().padding(4.dp).weight(1f)
-            )
-            Image(
-                painter = painterResource(res[2]),
-                contentDescription = "3rd card",
-                modifier = Modifier.fillMaxHeight().padding(4.dp).weight(1f)
-            )
-            Image(
-                painter = painterResource(res[3]),
-                contentDescription = "4th card",
-                modifier = Modifier.fillMaxHeight().padding(4.dp).weight(1f)
-            )
-            Image(
-                painter = painterResource(res[4]),
-                contentDescription = "5th card",
-                modifier = Modifier.fillMaxHeight().padding(4.dp).weight(1f)
-            )
+            res.forEachIndexed { index, res ->
+                Image(
+                    painter = painterResource(res),
+                    contentDescription = "card ${index + 1}",
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .padding(4.dp)
+                        .weight(1f)
+                )
+            }
         }
-    }
-    else {
+    } else {
         Column(
             modifier = Modifier
                 .weight(1f)
-                .background(Color(0,0,100))
+                .background(Color(0, 0, 100))
         ) {
             // Row의 weight는 세로 화면에서 균등 분배
-            Row(
-                Modifier.
-                weight(1f)
-            ) {
-                Image(
-                    painter = painterResource(res[0]),
-                    contentDescription = "1st card",
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(4.dp)
-                        .weight(1f)
-                )
-                Image(
-                    painter = painterResource(res[1]),
-                    contentDescription = "2nd card",
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(4.dp)
-                        .weight(1f)
-                )
-            }
-            Row(
-                Modifier
-                    .weight(1f)
-            ) {
-                Image(
-                    painter = painterResource(res[2]),
-                    contentDescription = "3rd card",
-                    modifier = Modifier.fillMaxHeight()
-                        .padding(4.dp)
-                        .weight(1f)
-                )
-                Image(
-                    painter = painterResource(res[3]),
-                    contentDescription = "4th card",
-                    modifier = Modifier.fillMaxHeight()
-                        .padding(4.dp)
-                        .weight(1f)
-                )
-            }
+            CardRow(res, 0)
+            CardRow(res, 1)
             Row(Modifier.weight(1f)) {
                 Image(
                     painter = painterResource(res[4]),
@@ -161,6 +108,30 @@ fun ColumnScope.CardImages(res: IntArray) {
         }
     }
 }
+
+@Composable
+fun ColumnScope.CardRow(res: IntArray, row: Int) {
+    // Row의 weight는 세로 화면에서 균등 분배
+    Row(Modifier.weight(1f)) {
+        Image(
+            painter = painterResource(res[row * 2]),
+            contentDescription = "card ${row * 2 + 1}",
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(4.dp)
+                .weight(1f)
+        )
+        Image(
+            painter = painterResource(res[row * 2 + 1]),
+            contentDescription = "card ${row * 2 + 1 + 1}",
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(4.dp)
+                .weight(1f)
+        )
+    }
+}
+
 
 @Composable
 fun ShuffleButton() {
