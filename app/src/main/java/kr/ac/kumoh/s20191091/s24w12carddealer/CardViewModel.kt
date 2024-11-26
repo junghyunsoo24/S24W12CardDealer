@@ -3,12 +3,14 @@ package kr.ac.kumoh.s20191091.s24w12carddealer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kr.ac.kumoh.s20191091.s24w12carddealer.CardModel.Companion.NUMBER_OF_CARDS
 import kotlin.random.Random
 
 class CardViewModel : ViewModel() {
-    companion object{
-        const val NUMBER_OF_CARDS = 5
-    }
+    private val cardModel = CardModel()
+//    companion object{
+//        const val NUMBER_OF_CARDS = 5
+//    }
 
     private val _cards = MutableLiveData<List<String>>()
     val cards: LiveData<List<String>>
@@ -26,12 +28,13 @@ class CardViewModel : ViewModel() {
     }
 
     fun shuffle(count: Int = NUMBER_OF_CARDS) {
-        val newCards = mutableSetOf<Int>()
-
-        // TODO: 상수 변경
-        while (newCards.size < count) {
-            newCards.add(Random.nextInt(52))
-        }
+        val newCards = cardModel.dealCards()
+//        val newCards = mutableSetOf<Int>()
+//
+//        // TODO: 상수 변경
+//        while (newCards.size < count) {
+//            newCards.add(Random.nextInt(CardModel.TOTAL_CARDS))
+//        }
 
         _cards.value = newCards.sorted().map { getCardName(it) }
     }
