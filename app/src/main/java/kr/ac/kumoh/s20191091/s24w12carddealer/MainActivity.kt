@@ -44,7 +44,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun MainScreen() {
     val viewModel: CardViewModel = viewModel()
