@@ -57,6 +57,7 @@ fun MainScreen() {
             CardSection(viewModel)
             ShuffleButton {
                 viewModel.shuffle()
+                viewModel.check()
             }
         }
     }
@@ -66,6 +67,7 @@ fun MainScreen() {
 @SuppressLint("DiscouragedApi")
 fun ColumnScope.CardSection(viewModel: CardViewModel) {
     val cards by viewModel.cards.observeAsState(emptyList())
+    val rank by viewModel.cardRank.observeAsState("")
     val context = LocalContext.current
 
     if(cards.isEmpty())
@@ -80,11 +82,11 @@ fun ColumnScope.CardSection(viewModel: CardViewModel) {
             context.packageName
         )
     }
-    CardImages(cardResources)
+    CardImages(cardResources, rank)
 }
 
 @Composable
-fun ColumnScope.CardImages(res: IntArray)        {
+fun ColumnScope.CardImages(res: IntArray, rank: String)        {
     if (LocalConfiguration.current.orientation
         == Configuration.ORIENTATION_LANDSCAPE
     ) {
@@ -98,7 +100,7 @@ fun ColumnScope.CardImages(res: IntArray)        {
             }
         }
         Text(
-            text = "가로입니다",
+            text = rank.ifEmpty { "가로입니다" },
             modifier = Modifier,
             style = MaterialTheme.typography.headlineMedium
         )
@@ -123,7 +125,7 @@ fun ColumnScope.CardImages(res: IntArray)        {
             }
         }
         Text(
-            text = "세로입니다",
+            text = rank.ifEmpty { "세로입니다" },
             modifier = Modifier,
             style = MaterialTheme.typography.headlineMedium
         )

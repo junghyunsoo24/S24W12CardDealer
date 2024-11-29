@@ -1,5 +1,7 @@
 package kr.ac.kumoh.s20191091.s24w12carddealer
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import kotlin.random.Random
 
 class CardModel {
@@ -9,6 +11,8 @@ class CardModel {
     }
 
     private val _cards = mutableSetOf<Int>()
+    val cards: Set<Int>
+        get() = _cards
 
     fun dealCards(n: Int = NUMBER_OF_CARDS): Set<Int> {
         _cards.clear()
