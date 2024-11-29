@@ -61,7 +61,6 @@ fun MainScreen() {
             }
         }
     }
-
 }
 
 @Composable
