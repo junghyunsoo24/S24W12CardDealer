@@ -3,9 +3,7 @@ package kr.ac.kumoh.s20191091.s24w12carddealer
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import kr.ac.kumoh.s20191091.s24w12carddealer.CardModel.Companion.NUMBER_OF_CARDS
-import kotlin.random.Random
 
 class CardViewModel : ViewModel() {
     private val cardModel = CardModel()
@@ -49,41 +47,62 @@ class CardViewModel : ViewModel() {
             isTwoPair(numbers) -> "투페어"
             isOnePair(numbers) -> "원페어"
             else -> "노페어"
+            //우선순위가 높은것부터 나열
         }
     }
 
     private fun isStraightFlush(numbers: List<String>, shapes: List<String>): Boolean {
         return isStraight(numbers) && isFlush(shapes)
+        ///스트레이트 이면서 플러시
     }
 
     private fun isFourOfAKind(numbers: List<String>): Boolean {
         return numbers.groupBy { it }.any { it.value.size == 4 }
+        //동일한 숫자가 4개
     }
 
     private fun isFullHouse(numbers: List<String>): Boolean {
         val grouped = numbers.groupBy { it }
         return grouped.any { it.value.size == 3 } && grouped.any { it.value.size == 2 }
+        //원페어 이면서 트리플
     }
 
     private fun isFlush(shapes: List<String>): Boolean {
         return shapes.distinct().size == 1
+        //형태가 모두 동일
     }
 
     private fun isStraight(numbers: List<String>): Boolean {
-        val sorted = numbers.sorted()
+        val mappedNumbers = numbers.map { cardToInt(it) }
+        val sorted = mappedNumbers.sorted()
         return sorted.zipWithNext().all { it.second == it.first + 1 }
+        //숫자가 이어짐
     }
 
     private fun isThreeOfAKind(numbers: List<String>): Boolean {
         return numbers.groupBy { it }.any { it.value.size == 3 }
+        //동일한 숫자가 3개
     }
 
     private fun isTwoPair(numbers: List<String>): Boolean {
         return numbers.groupBy { it }.filter { it.value.size == 2 }.size == 2
+        //동일한 숫자가 2개인게 2개
     }
 
     private fun isOnePair(numbers: List<String>): Boolean {
         return numbers.groupBy { it }.any { it.value.size == 2 }
+        //동일한 숫자가 2개인게 1개
+    }
+
+    private fun cardToInt(card: String): Int {
+        return when (card) {
+            "ace" -> 0
+            "jack" -> 10
+            "queen" -> 11
+            "king" -> 12
+            else -> card.toInt()
+        }
+        //카드에 문자를 숫자로 변경
     }
 
     private fun getShape(c: Int): String{

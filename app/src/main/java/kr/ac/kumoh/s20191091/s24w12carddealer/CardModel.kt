@@ -1,7 +1,5 @@
 package kr.ac.kumoh.s20191091.s24w12carddealer
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import kotlin.random.Random
 
 class CardModel {
