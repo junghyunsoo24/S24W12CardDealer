@@ -9,8 +9,6 @@ class CardModel {
     }
 
     private val _cards = mutableSetOf<Int>()
-    //    public val cards: Set<Int>
-    //        get() = _cards
 
     fun dealCards(n: Int = NUMBER_OF_CARDS): Set<Int> {
         _cards.clear()

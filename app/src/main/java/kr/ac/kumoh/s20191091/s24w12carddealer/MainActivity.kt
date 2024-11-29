@@ -17,11 +17,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -78,12 +80,6 @@ fun ColumnScope.CardSection(viewModel: CardViewModel) {
             context.packageName
         )
     }
-//    cardResources[0] = R.drawable.c_10_of_spades
-//    cardResources[1] = R.drawable.c_jack_of_spades2
-//    cardResources[2] = R.drawable.c_queen_of_spades2
-//    cardResources[3] = R.drawable.c_king_of_spades2
-//    cardResources[4] = R.drawable.c_ace_of_spades
-
     CardImages(cardResources)
 }
 
@@ -92,24 +88,20 @@ fun ColumnScope.CardImages(res: IntArray)        {
     if (LocalConfiguration.current.orientation
         == Configuration.ORIENTATION_LANDSCAPE
     ) {
-        // weight(1f)은 onCreate()에 있는 Column에 적용됨
-        // 버튼을 맨 밑에 위치시키기 위함
         Row(
             modifier = Modifier
                 .weight(1f)
                 .background(Color(0, 100, 0))
         ) {
             res.forEachIndexed { index, res ->
-                Image(
-                    painter = painterResource(res),
-                    contentDescription = "card ${index + 1}",
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(4.dp)
-                        .weight(1f)
-                )
+                CardImageView(res, "card ${index + 1}")
             }
         }
+        Text(
+            text = "가로입니다",
+            modifier = Modifier,
+            style = MaterialTheme.typography.headlineMedium
+        )
     } else {
         Column(
             modifier = Modifier
@@ -119,34 +111,22 @@ fun ColumnScope.CardImages(res: IntArray)        {
             Row(Modifier.weight(1f)) {
                 CardImageView(res[0] , "Card 1")
                 CardImageView(res[1] , "Card 2")
-
             }
 
             Row(Modifier.weight(1f)) {
                 CardImageView(res[2] , "Card 3")
                 CardImageView(res[3] , "Card 4")
-
             }
 
             Row(Modifier.weight(1f)) {
                 CardImageView(res[4] , "Card 5")
             }
-//            // Row의 weight는 세로 화면에서 균등 분배
-//            Row(Modifier.weight(1f)) {
-//
-//
-//                Row(Modifier.weight(1f)) {
-//                    Image(
-//                        painter = painterResource(res[4]),
-//                        contentDescription = "5th card",
-//                        modifier = Modifier
-//                            .fillMaxHeight()
-//                            .padding(4.dp)
-//                            .weight(1f)
-//                    )
-//                }
-//            }
         }
+        Text(
+            text = "세로입니다",
+            modifier = Modifier,
+            style = MaterialTheme.typography.headlineMedium
+        )
     }
 }
 
@@ -163,13 +143,10 @@ fun RowScope.CardImageView(res: Int, desc: String) {
 }
 
 @Composable
-fun ShuffleButton(function: () -> Unit) {
+fun ShuffleButton(onDeal: () -> Unit) {
     Button(
         modifier = Modifier.fillMaxWidth(),
-        //fillMaxSize만 하면 밀어내버림
-        onClick = {
-
-        }
+        onClick = { onDeal() }
     ) {
         Text(stringResource(R.string.good_luck))
     }
